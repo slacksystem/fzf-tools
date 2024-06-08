@@ -173,10 +173,10 @@ function fzf-git-log() {
 
 alias fzgl='fzf-git-log'
 
-function fzf-ag() {
+function fzf-rg() {
     local selected_file
     selected_file=$(\
-        ag "$1" . | fzf \
+        rg -. "$1" . 2>/dev/null | fzf \
         --multi --no-sort --cycle \
         --preview='echo {}' \
         --preview-window down:10% \
@@ -185,7 +185,7 @@ function fzf-ag() {
     ) && $EDITOR "$selected_file"
 }
 
-alias fzag='fzf-ag'
+alias fzrg='fzf-rg'
 
 function fzf-docker-ps() {
     local selected_container
@@ -223,7 +223,7 @@ alias fzgrep='fzf-grep'
 
 function fzf-find() {
     local selected_file
-    selected_file=$(find . -type f | fzf --multi --no-sort --cycle \
+    selected_file=$(fd  -t f . | fzf --multi --no-sort --cycle \
         --preview='echo {}' \
         --preview-window down:10% \
         --layout='reverse-list' \
