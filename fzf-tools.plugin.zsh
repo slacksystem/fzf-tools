@@ -16,25 +16,25 @@ function fzf-command-widget() {
 
     case "$full_command" in
         ls*)
-            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333"
+            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list'" # --color bg:#222222,preview-bg:#333333"
         ;;
         man*)
             BUFFER="fzf-man $full_command"
         ;;
         printenv* | env*)
-            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333"
+            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list'" # --color bg:#222222,preview-bg:#333333"
         ;;
         set)
-            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333"
+            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list'" # --color bg:#222222,preview-bg:#333333"
         ;;
         grep*)
-            BUFFER="$full_command | fzf -i --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333"
+            BUFFER="$full_command | fzf -i --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list'" # --color bg:#222222,preview-bg:#333333"
         ;;
         find*)
-            BUFFER="$full_command | fzf -i --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333"
+            BUFFER="$full_command | fzf -i --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list'" # --color bg:#222222,preview-bg:#333333"
         ;;
         'ps aux')
-            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333"
+            BUFFER="$full_command | fzf --multi --cycle --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list'" # --color bg:#222222,preview-bg:#333333"
         ;;
     esac
     zle accept-line
@@ -50,7 +50,7 @@ function fzf-man() {
     selected_command=$(man -k . | awk '{print $1}' | sort | uniq | fzf --multi --cycle --preview='echo {}' --preview-window down:10%)
 
     if [[ -n "$selected_command" ]]; then
-        man "$selected_command" | fzf --multi --cycle --tac --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333
+        man "$selected_command" | fzf --multi --cycle --tac --no-sort --preview='echo {}' --preview-window down:10% --layout='reverse-list' # --color bg:#222222,preview-bg:#333333
     fi
 }
 
@@ -58,7 +58,7 @@ function fzf-man() {
 # and concatenate them together. 
 function fzf-run-cmd-from-history() {
     local selected_command
-    selected_command=$(history | awk '{$1=""; print $0}' | awk '!x[$0]++' | fzf --cycle --tac --no-sort --preview 'echo {}' --preview-window down:10% --color bg:#222222,preview-bg:#333333)
+    selected_command=$(history | awk '{$1=""; print $0}' | awk '!x[$0]++' | fzf --cycle --tac --no-sort --preview 'echo {}' --preview-window down:10% ) # --color bg:#222222,preview-bg:#333333)
 
     if [[ -n "$selected_command" ]]; then
         eval "$selected_command"
@@ -155,7 +155,7 @@ alias fzscripts='fzf-exec-scripts'
 
 function fzf-search-files-on-path() {
     local _path="$1"
-    find tree "$_path" -type f | fzf -i --multi --cycle --preview='echo {}' --preview-window down:10% --color bg:#222222,preview-bg:#333333   
+    find tree "$_path" -type f | fzf -i --multi --cycle --preview='echo {}' --preview-window down:10% # --color bg:#222222,preview-bg:#333333   
 }
 
 alias fzfop='fzf-search-files-on-path'
@@ -167,7 +167,7 @@ function fzf-git-log() {
             --preview='echo {}' \
             --preview-window down:10% \
             --layout='reverse-list' \
-            --color bg:#222222,preview-bg:#333333 \
+            # --color bg:#222222,preview-bg:#333333 \
     ) && git show "$selected_commit"
 }
 
@@ -181,7 +181,7 @@ function fzf-ag() {
         --preview='echo {}' \
         --preview-window down:10% \
         --layout='reverse-list' \
-        --color bg:#222222,preview-bg:#333333 \
+        # --color bg:#222222,preview-bg:#333333 \
     ) && $EDITOR "$selected_file"
 }
 
@@ -189,7 +189,7 @@ alias fzag='fzf-ag'
 
 function fzf-docker-ps() {
     local selected_container
-    selected_container=$(docker ps -a | fzf --multi --no-sort --cycle --preview='echo {}' --preview-window down:10% --layout='reverse-list' --color bg:#222222,preview-bg:#333333 | awk '{print $1}') && docker logs "$selected_container"
+    selected_container=$(docker ps -a | fzf --multi --no-sort --cycle --preview='echo {}' --preview-window down:10% --layout='reverse-list' | awk '{print $1}') && docker logs "$selected_container"
 }
 
 alias fzdps='fzf-docker-ps'
@@ -203,7 +203,7 @@ function fzf-ssh() {
             --preview='echo {}' \
             --preview-window down:10% \
             --layout='reverse-list' \
-            --color bg:#222222,preview-bg:#333333\
+            # --color bg:#222222,preview-bg:#333333\
     ) && ssh "$selected_host"
 }
 
@@ -215,7 +215,7 @@ function fzf-grep() {
         --preview='echo {}' \
         --preview-window down:10% \
         --layout='reverse-list' \
-        --color bg:#222222,preview-bg:#333333\
+        # --color bg:#222222,preview-bg:#333333\
     ) && $EDITOR "$selected_file"
 }
 
@@ -227,7 +227,7 @@ function fzf-find() {
         --preview='echo {}' \
         --preview-window down:10% \
         --layout='reverse-list' \
-        --color bg:#222222,preview-bg:#333333\
+        # --color bg:#222222,preview-bg:#333333\
     ) && $EDITOR "$selected_file"
 }
 
