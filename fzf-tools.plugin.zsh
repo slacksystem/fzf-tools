@@ -167,13 +167,27 @@ function fzf-git-log() {
             --preview='echo {}' \
             --preview-window down:10% \
             --layout='reverse-list' \
-            # --color bg:#222222,preview-bg:#333333 \
+            | cut -d' ' -f1
     ) && git show "$selected_commit"
 }
 
 alias fzgl='fzf-git-log'
 
 function fzf-rg() {
+    # initialize rgargs array
+    local rgargs=()
+    # loop through the arguments
+    while $# -gt 0; do
+        case "$1" in
+            -h|--help) echo "Usage: fzf-rg <search_term> <directory>"; return 1 ;;
+            --help-rg) rg --help; return 1 ;;
+            -A|--after-context) rgargs+=("$1" "$2"); shift ;;
+            -B|--before-context) rgargs+=("$1" "$2"); shift ;;
+
+            *) break ;;
+
+       esac  
+    done
     local selected_file
     selected_file=$(\
         rg -. "$1" . 2>/dev/null | fzf \
